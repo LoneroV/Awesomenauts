@@ -10,6 +10,7 @@ game.PlayerEntity = me.Entity.extend({
                     return(new me.Rect(0, 0, 64, 50)).toPolygon();
                 }
             }]);
+        this.type = "PlayerEntity";
         this.body.setVelocity(5, 20);
         //keeps traack of which direction your player is facing.
         this.facing = "right";
@@ -23,6 +24,7 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
         this.renderable.setCurrentAnimation("idle");
     },
+    
     update: function(delta) {
         this.now = new Date().getTime();
         //checks if right button has been pressed
@@ -79,7 +81,13 @@ game.PlayerEntity = me.Entity.extend({
         this.body.update(delta);
         this._super(me.Entity, "update", [delta]);
         return true;
-   },
+    },
+    
+    loseHealth: function(damage){
+        this.health = this.health - damage;
+        
+    },
+    
     collideHandler: function(response) {
         if (response.b.type === 'EnemyBaseEntity') {
             var ydif = this.pos.y - response.b.pos.y;
@@ -102,6 +110,29 @@ game.PlayerEntity = me.Entity.extend({
             if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000) {
                 this.lastHit = this.now;
                 response.b.loseHealth();
+            }
+        }else if(response.b.type==='EnemyCreep'){
+            var xdif = this.pos.x - response.b.pos.x;
+            var ydif = this.pos.y - response.b.pos.x;
+            
+            if(xdif<=0){
+                this.pos.x = this.pos.x + 1;
+                if(this.facing==="left"){
+                    this.vel.x = 0;
+                }
+            }else {
+                this.pos.x = this.pos.x - 1;
+                if(this.facing==="right"){
+                    this.vel.x = 0;
+                }
+            }
+            
+            if(this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000
+                   && (Math.abs(ydif) <=40) && 
+                   ((xdif>0 && this.facing==="right")
+                   )){
+                this.lastHit = this.now;
+                response.b.loseHealth(1);
             }
         }
     }
@@ -137,11 +168,9 @@ game.PlayerBaseEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
-    
-    loseHealth: function(damage){
+    loseHealth: function(damage) {
         this.health = this.health - damage;
     },
-    
     onCollision: function() {
 
     }
@@ -214,26 +243,54 @@ game.EnemyCreep = me.Entity.extend({
 
         this.renderable.addAnimation("walk", [3, 4, 5], 80);
         this.renderable.setCurrentAnimation("walk");
-   },
+    },
+    
+    loseHealth: function(damage){
+        this.health = this.health - damage;
+        
+    },
+    
     update: function(delta) {
+        if(this.health <= 0){
+            me.game.world.removeChild(this);
+        }
         this.now = new Date().getTime();
         this.body.vel.x -= this.body.accel.x * me.timer.tick;
         me.collision.check(this, true, this.collideHandler.bind(this), true);
-        
+
         this.body.update(delta);
         this._super(me.Entity, "update", [delta]);
-        
+
         return true;
     },
-    
-    collideHandler: function(response){
-        if(response.b.type=== 'PlayerBase'){
+    collideHandler: function(response) {
+        if (response.b.type === 'PlayerBase') {
             this.attacking = true;
-            this.lastAttacking= this.now;
+            this.lastAttacking = this.now;
             this.body.vel.x = 0;
             this.pos.x = this.pos.x + 1;
-            if((this.now-this.lastHit >= 1000)){
+            if ((this.now - this.lastHit >= 1000)) {
                 this.lastHit = this.now;
+                response.b.loseHealth(1);
+            }
+        } else if (response.b.type === 'PlayerEntity') {
+            var xdif = this.pos.x - response.b.pos.x;
+
+            //lets us know if creeps are currently attacking
+            this.attacking = true;
+            //keeps track of last attack
+            this.lastAttacking = this.now;
+            
+            if(xdif>0) {
+                //allows creep to maintain position
+                this.pos.x = this.pos.x + 1;
+                //stops creep from moving
+            this.body.vel.x = 0;
+            }
+            this.pos.x = this.pos.x + 1;
+            if ((this.now - this.lastHit >= 1000) && xdif > 0) {
+                this.lastHit = this.now;
+                //makes lose one health
                 response.b.loseHealth(1);
             }
         }
