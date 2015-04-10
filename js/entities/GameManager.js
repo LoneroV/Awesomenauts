@@ -11,14 +11,14 @@ game.GameTimerManager = Object.extend({
         this.addCreep();
         return true;
     },
-    addGold: function(){
+    addGold: function() {
         if (Math.round(this.now / 1000) % 20 === 0 && (this.now - this.lastCreep >= 1000)) {
             game.data.gold += 1;
             console.log("Current gold:" + game.data.gold);
         }
     },
-    addCreep: function(){
-       if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
+    addCreep: function() {
+        if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
             this.lastCreep = this.now;
             var creep = me.pool.pull("EnemyCreep", 1000, 0, {});
             me.game.world.addChild(creep, 5);
@@ -27,10 +27,10 @@ game.GameTimerManager = Object.extend({
 });
 
 game.HeroDeathManager = Object.extend({
-    init: function(x, y, settings){
+    init: function(x, y, settings) {
         this.alwaysUpdate = true;
     },
-    update: function(){
+    update: function() {
         if (game.data.player.dead) {
             me.game.world.removeChild(game.data.player);
             me.state.current().resetPlayer(10, 0);
@@ -40,21 +40,27 @@ game.HeroDeathManager = Object.extend({
 });
 
 game.ExperienceManager = Object.extend({
-    init: function(x, y, settings){
+    init: function(x, y, settings) {
         this.alwaysUpdate = true;
         this.gameOver = false;
     },
-    update: function(){
-        if(game.data.win === true && !this.gameOver){
-           game.data.exp += 10;
-           this.gameOver = true;
-        }else if (game.data.win == false && !this.gameOver){
-            game.data.exp += 1;
-            this.gameOver = true;
+    update: function() {
+        if (game.data.win === true && !this.gameOver) {
+            this.gameOver(true);
+        } else if (game.data.win == false && !this.gameOver) {
+            this.gameOver(false);
         }
-        console.log(game.data.experience);
-        
         return true;
+    },
+    
+    gameOver: function(win) {
+        if(win){
+           game.data.exp += 10; 
+        }else{
+           game.data.exp += 1; 
+        }
         
+        this.gameOver = true;
+        me.save.exp = game.data.exp;
     }
 });
