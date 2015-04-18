@@ -7,8 +7,8 @@ game.TitleScreen = me.ScreenObject.extend({
         
         me.game.world.addChild(new (me.Renderable.extend({
             init: function() {
-                this._super(me.Renderable, 'init', [270, 240, 300, 50]);
-                this.font = new me.Font("Arial", 46, "white")
+                this._super(me.Renderable, 'init', [280, 240, 300, 50]);
+                this.font = new me.Font("Stahlbetontraeger", 46, "white");
 
             },
             draw: function(renderer) {
@@ -27,6 +27,7 @@ game.TitleScreen = me.ScreenObject.extend({
                 me.save.remove("exp2");
                 me.save.remove("exp3");
                 me.save.remove("exp4");
+                me.save.add({exp: 0, exp1: 0, exp2: 0, exp3: 0, exp4: 0});
                 me.state.change(me.state.PLAY);
             }
 
@@ -35,7 +36,7 @@ game.TitleScreen = me.ScreenObject.extend({
         me.game.world.addChild(new (me.Renderable.extend({
             init: function() {
                 this._super(me.Renderable, 'init', [380, 440, 250, 50]);
-                this.font = new me.Font("Arial", 46, "white")
+                this.font = new me.Font("Stahlbetontraeger", 46, "white");
 
             },
             draw: function(renderer) {
@@ -54,7 +55,7 @@ game.TitleScreen = me.ScreenObject.extend({
                 game.data.exp3 = me.save.exp3;
                 game.data.exp4 = me.save.exp4;
                 me.input.releasePointerEvent('pointerdown', this);
-                me.state.change(me.state.PLAY);
+                me.state.change(me.state.SPENDEXP);
             }
 
         })));
