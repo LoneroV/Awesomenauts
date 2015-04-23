@@ -10,6 +10,11 @@ game.SpendExp = me.ScreenObject.extend({
         me.input.bindKey(me.input.KEY.F3, "F3");
         me.input.bindKey(me.input.KEY.F4, "F4");
         me.input.bindKey(me.input.KEY.F5, "F5");
+        var exp1cost = ((Number(game.data.exp1) + 1) * 10);
+        var exp2cost = ((Number(game.data.exp2) + 1) * 10);
+        var exp3cost = ((Number(game.data.exp3) + 1) * 10);
+        var exp4cost = ((Number(game.data.exp4) + 1) * 10);
+        
         
         me.game.world.addChild(new (me.Renderable.extend({
             init: function() {
@@ -18,18 +23,21 @@ game.SpendExp = me.ScreenObject.extend({
 
             },
             draw: function(renderer) {
-                this.font.draw(renderer.getContext(), "Press F1-F4 to Buy, Press F5 to skip", this.pos.x, this.pos.y);
+                this.font.draw(renderer.getContext(), "Press F1-F4 to Buy, Press F5 to Play", this.pos.x, this.pos.y);
                 this.font.draw(renderer.getContext(), "Current EXP: " + game.data.exp.toString(), this.pos.x + 0, this.pos.y + 50);
-                this.font.draw(renderer.getContext(), "F1: Increase Gold Production: " + game.data.exp1.toString() + "Cost: " + ((game.data.exp1 + 1) * 10), this.pos.x + 0, this.pos.y + 100);
-                this.font.draw(renderer.getContext(), "F2: Increase Attack Power: " + game.data.exp2.toString()  + "Cost: " + ((game.data.exp2 + 1) * 10), this.pos.x + 0, this.pos.y + 150);
-                this.font.draw(renderer.getContext(), "F3: Increase Health: " + game.data.exp3.toString()  + "Cost: " + ((game.data.exp3 + 1) * 10), this.pos.x + 0, this.pos.y + 200);
-                this.font.draw(renderer.getContext(), "F4: Increase Speed: " + game.data.exp4.toString()  + "Cost: " + ((game.data.exp4 + 1) * 10), this.pos.x + 0, this.pos.y + 250);
+                this.font.draw(renderer.getContext(), "F1: Increase Gold Production: " + game.data.exp1.toString() + "Cost: " + exp1cost, this.pos.x + 0, this.pos.y + 100);
+                this.font.draw(renderer.getContext(), "F2: Increase Attack Power: " + game.data.exp2.toString()  + "Cost: " + exp2cost, this.pos.x + 0, this.pos.y + 150);
+                this.font.draw(renderer.getContext(), "F3: Increase Health: " + game.data.exp3.toString()  + "Cost: " + exp3cost, this.pos.x + 0, this.pos.y + 200);
+                this.font.draw(renderer.getContext(), "F4: Increase Speed: " + game.data.exp4.toString()  + "Cost: " + exp4cost, this.pos.x + 0, this.pos.y + 250);
             }
         })));
        
        this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge){
            if(action === "F1"){
-               
+               if(game.data.exp >= exp1cost){
+                   game.data.exp1 += 1;
+                   game.data.exp -= exp1cost;
+               }
            }else if (action === "F2"){
                
            }else if (action === "F3"){
