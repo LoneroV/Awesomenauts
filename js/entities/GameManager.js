@@ -194,7 +194,32 @@ game.SpendGold = Object.extend({
         }
     },
     
-    makePurchase: function(skill){
+    makePurchase: function(skill) {
+        if (skill === 1) {
+            game.data.gold -= ((game.data.skill1 + 1) * 10);
+            game.data.skill1 += 1;
+            game.data.player.attack += 1;
+        }else if (skill === 2) {
+            game.data.gold -= ((game.data.skill1 + 1) * 10);
+            game.data.skill2 += 1;
+            
+        }else if (skill === 3) {
+            game.data.gold -= ((game.data.skill1 + 1) * 10);
+            game.data.skill3 += 1;
+            
+        }else if (skill === 4) {
+            game.data.gold -= ((game.data.skill1 + 1) * 10);
+            game.data.skill4 += 1;
+            
+        }else if (skill === 5) {
+            game.data.gold -= ((game.data.skill1 + 1) * 10);
+            game.data.skill5 += 1;
+            
+        }else if (skill === 6) {
+            game.data.gold -= ((game.data.skill1 + 1) * 10);
+            game.data.skill6 += 1;
+            
+        }
         
     }
   
