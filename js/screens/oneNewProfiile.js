@@ -4,6 +4,8 @@ game.NewProfile = me.ScreenObject.extend({
      */
     onResetEvent: function() {
         me.game.world.addChild(new me.Sprite(0, 0, me.loader.getImage('new-screen')), -10);
+        document.getElementById("input").style.visibility = "visible";
+        document.getElementById("register").style.visibility = "visible";
         
         me.input.unbindKey(me.input.KEY.B);
         me.input.unbindKey(me.input.KEY.W);
@@ -26,6 +28,7 @@ game.NewProfile = me.ScreenObject.extend({
     },
 
     onDestroyEvent: function() {
-       
+       document.getElementById("input").style.visibility = "hidden";
+       document.getElementById("register").style.visibility = "hidden";
     }
 });
