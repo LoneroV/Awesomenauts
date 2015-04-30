@@ -119,6 +119,7 @@ game.PlayerEntity = me.Entity.extend({
             this.collisionWithEnemyCreep(response);
         }
     },
+    
     collisionWithEnemyBase: function(response) {
         var ydif = this.pos.y - response.b.pos.y;
         var xdif = this.pos.x - response.b.pos.x;
@@ -136,12 +137,14 @@ game.PlayerEntity = me.Entity.extend({
             response.b.loseHealth(game.data.playerAttack);
         }
     },
+    //handles collions with creeps
     collisionWithEnemyCreep: function(response) {
         var xdif = this.pos.x - response.b.pos.x;
         var ydif = this.pos.y - response.b.pos.y;
         this.stopMovement(xdif);
         this.checkAttack(xdif, ydif, response);
     },
+    //stops us from moving if we hit the base or creep
     stopMovement: function(xdif){
         if (xdif >= 0) {
             if (this.facing === "left") {

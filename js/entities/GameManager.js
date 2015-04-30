@@ -3,14 +3,16 @@ game.ExperienceManager = Object.extend({
         this.alwaysUpdate = true;
         this.gameover = false;
     },
+    //updates the game
     update: function() {
         if (game.data.win === true && !this.gameover) {
             this.gameOver(true);
-        } else if (game.data.win == false && !this.gameover) {
+        } else if (game.data.win === false && !this.gameover) {
             this.gameOver(false);
         }
         return true;
     },
+    //what to do at game over win or lose
     gameOver: function(win) {
         if (win) {
             game.data.exp += 10;
@@ -25,8 +27,9 @@ game.ExperienceManager = Object.extend({
 
         $.ajax({
             type: "POST",
-            url: "php/controller/save-user.php",
+            url: "php/controller/saved-user.php",
             data: {
+                //experience variables
                 exp: game.data.exp,
                 exp1: game.data.exp1,
                 exp2: game.data.exp2,
@@ -36,6 +39,7 @@ game.ExperienceManager = Object.extend({
             },
             dataType: "text"
         })
+                //what to do if login is true or false
                 .success(function(response) {
                     if (response === "true") {
                         me.state.change(me.state.MENU);

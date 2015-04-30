@@ -49,7 +49,7 @@ var game = {
                 me.plugin.register.defer(this, debugPanel, "debug");
             });
         }
-
+        //allows our SPENDEXP, LOAD, AND NEW screen to work
         me.state.SPENDEXP = 112;
         me.state.LOAD = 113;
         me.state.NEW = 114;

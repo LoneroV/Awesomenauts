@@ -9,7 +9,7 @@ game.PlayScreen = me.ScreenObject.extend({
         me.levelDirector.loadLevel("level1");
 
         this.resetPlayer(0, 420);
-
+        //adds variables
         var gameTimerManager = me.pool.pull("GameTimerManager", 0, 0, {});
         me.game.world.addChild(gameTimerManager, 0);
         
@@ -21,7 +21,7 @@ game.PlayScreen = me.ScreenObject.extend({
         
         var SpendGold = me.pool.pull("SpendGold");
         me.game.world.addChild(SpendGold, 0);
-        
+        //binds keys to use in game
         me.input.bindKey(me.input.KEY.B, "buy");
         me.input.bindKey(me.input.KEY.Q, "skill1");
         me.input.bindKey(me.input.KEY.W, "skill2");
@@ -32,8 +32,8 @@ game.PlayScreen = me.ScreenObject.extend({
         me.input.bindKey(me.input.KEY.A, "attack");
 
         // add our HUD to the game world
-        this.HUD = new game.HUD.Container();
-        me.game.world.addChild(this.HUD);
+//        this.HUD = new game.HUD.Container();
+//        me.game.world.addChild(this.HUD);
     },
     /**
      *  action to perform when leaving this screen (state change)

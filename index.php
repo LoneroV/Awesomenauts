@@ -90,9 +90,11 @@ require_once("php/controller/create-db.php");
 			});
 		</script>
                 <script>
+                //allows the main menu button to work
                 $("#mainmenu").bind("click", function(){
                     me.state.change(me.state.MENU);
                 });
+                //allows us to go to the register a user screen
                 $("#register").bind("click", function(){
                     $.ajax({
                        type: "POST",
@@ -114,6 +116,7 @@ require_once("php/controller/create-db.php");
                         alert("fail");
                     });
                 });
+                //allows us to go to load a user screen
                 $("#load").bind("click", function(){
                     $.ajax({
                        type: "POST",
@@ -125,10 +128,10 @@ require_once("php/controller/create-db.php");
                        dataType: "text"
                     })
                     .success(function(response){
-                        if(response==="Invalid username and password"){
+                        if(response==="Invalid username or password"){
                            alert(response); 
                         }else{
-                            var data = JQuery.parseJSON(response);
+                            var data = jQuery.parseJSON(response);
                             game.data.exp = data["exp"];
                             game.data.exp1 = data["exp1"];
                             game.data.exp2 = data["exp2"];

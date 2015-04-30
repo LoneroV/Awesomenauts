@@ -13,11 +13,11 @@ $array = array(
 //makes sure to tell you if you mess up
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
-$query = $_SESSION["connection"]->query("SELECT salt, password FROM users WHERE username = '$username'");
+$query = $_SESSION["connection"]->query("SELECT * FROM users WHERE username = '$username'");
 
 if ($query->num_rows == 1) {
     $row = $query->fetch_array();
-
+    //accounts for users exp variables
     if ($row["password"] === crypt($password, $row["salt"])) {
         $_SESSION["authenticated"] = true;
         $array["exp"] = $row["exp"];
@@ -28,8 +28,10 @@ if ($query->num_rows == 1) {
         $_SESSION["name"] = $username;
         echo json_encode($array);
     } else {
+        //tells us that our username or password is incorrect
         echo "Invalid username or password";
     }
 } else {
+    //tells us that our username or password is incorrect
     echo "Invalid username or password";
 }

@@ -7,7 +7,7 @@
     $salt = "$5$" . "rounds=500$" . uniqid(mt_rand(), true) . "$";
     
     $hashedPassword = crypt($password, $salt);
-    //This allows me to create my user using email password and username
+    //This allows me to create my user using password and username
     $query = $_SESSION["connection"]->query("INSERT INTO users SET "
             . "username = '$username',"
             . "password = '$hashedPassword',"
@@ -19,13 +19,11 @@
             . "exp4 = 0");
     
     $_SESSION["name"] = $username;
-    
-    
+
     if($query) {
         //need this for ajax on index.php
         echo "true";
         //allows us to see the  link in the nav bar
-        ?><a href="<?php echo $path . "index.php"?>">Create User</a><?php
     }
     else{
         echo "<p>" . $_SESSION["connection"]->error . "</p>";

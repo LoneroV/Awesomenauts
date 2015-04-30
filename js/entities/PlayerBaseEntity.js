@@ -21,6 +21,7 @@ game.PlayerBaseEntity = me.Entity.extend({
     },
     update: function(delta) {
         if (this.health <= 0) {
+            console.log("broken");
             this.broken = true;
             game.data.win = false;
             this.renderable.setCurrentAnimation("broken");

@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . "/../model/config.php");
 
+//recalls exp for user
 $exp = filter_input(INPUT_POST, "exp", FILTER_SANITIZE_STRING);
 $exp1 = filter_input(INPUT_POST, "exp", FILTER_SANITIZE_STRING);
 $exp2 = filter_input(INPUT_POST, "exp", FILTER_SANITIZE_STRING);
